@@ -8,13 +8,15 @@ Created on Wed Aug 26 15:31:18 2020
 
 
 import pandas as pd
+from make_lesions_xls import MAIN_DIR
+import sys
 
 SUBJECTS_DIR = "/home/mwynen/freesurfer/subjects"
 
 def get_brain_volumes(subject):
     stats={}
     
-    with open(SUBJECTS_DIR + "/sub-{0}_MPRAGE.nii/stats/aseg.stats".format(subject)) as file:
+    with open(SUBJECTS_DIR + "/sub-{0}_MPRAGE.nii/stats/aseg_lesions.stats".format(subject)) as file:
         for line in file:
             if "Estimated Total Intracranial Volume," in line:
                 lst = line.split(', ')
@@ -84,5 +86,20 @@ def get_brain_volumes(subject):
         stats['Putamen']=left_putamen+right_putamen
         stats['Thalamus']=left_thalamus+right_thalamus
         
-                        
+        brainvol = stats["Brain volume"]
+        for key,value in stats.items():
+            if key != "Brain volume":
+                stats[key] = value/brainvol
+        
         return stats
+
+def make_subject_xls(subject):
+    
+    stats = get_brain_volumes(subject)
+    df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
+    df = df.transpose()
+    df.to_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}.xls".format(subject))
+    
+if __name__ == "__main__":
+    subject = sys.argv[1]
+    make_subject_xls(subject)

@@ -76,6 +76,7 @@ def make_lesions_xls(subject, minimum_lesion_size=5):
             print("Lesion {0}: {1} voxels".format(lesion_id, lesion_voxel_volume_count))
         else: 
             print("Lesion {0}: {1} voxels ==> Discarded (too small)".format(lesion_id, lesion_voxel_volume_count))
+            #labeled_lesions[labeled_lesions == lesion_id] = 0
     
     
     columns = ["Voxel Volume", "Location 20%", "Location 30%"]
@@ -194,12 +195,41 @@ def count_matching_lesion_voxels(lesion_mx, segmentation_mx, lesion, segmentatio
     
     
     
+def make_location_mask(subject, percentage=20):
+    #df = pd.read_excel(MAIN_DIR + "/{0}/sub-{1}/Pietro/lesion_informations.xls".format(machine,subject))
+    df = pd.read_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.xls".format(subject))
+    locations = list(df["Location {0}%".format(percentage)])
+    ids = list(df["Unnamed: 0"])
+    
+    lesion_image = nib.load(MAIN_DIR+ "/sub-{0}/segmentations/sub-{0}_labeled_lesions.nii.gz".format(subject))
+    lesion_mx = lesion_image.get_fdata()
+    
+    lesion_loc = lesion_mx.copy()
+    
+    dictionary = {"White Matter":100, "Cortical or juxta-cortical":200, "Periventricular":300, "Infratentorial":400}
+    
+    
+    
+    for i in range(len(locations)):
+        lesion_loc[lesion_loc == ids[i]] = dictionary[locations[i]]
+    
+    nifti_out = nib.Nifti1Image(lesion_loc,affine=lesion_image.affine)
+    # nib.save(nifti_out, MAIN_DIR+'/{0}/sub-{1}/segmentations/sub-{1}_lesion_locations_{2}.nii.gz'.format(machine,subject,percentage))
+    nib.save(nifti_out, MAIN_DIR+'/sub-{0}/segmentations/sub-{0}_lesion_locations_{1}.nii.gz'.format(subject,percentage))
+
     
     
     
     
     
     
-    
-    
+if __name__ == "__main__":
+    import sys
+    subject = sys.argv[1]
+    #make_lesions_xls(subject)
+    if len(sys.argv)>2:
+        make_location_mask(subject, int(sys.argv[2]))
+    else:
+        make_location_mask(subject,20)
+        make_location_mask(subject,30)
     

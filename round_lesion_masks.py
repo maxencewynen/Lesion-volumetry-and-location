@@ -8,14 +8,6 @@ Created on Mon Aug 24 16:43:08 2020
 
 import numpy as np
 import nibabel as nib 
-from scipy.ndimage.measurements import label
-import numpy.ma as ma
-import os
-import pandas as pd
-from shutil import copyfile
-import matplotlib.pyplot as plt
-from scipy.ndimage.morphology import binary_dilation
-import subprocess as sp
 
 MAIN_DIR="/home/mwynen/scripts/MultipleSclerosis"
 SUBJECTS = ["006", "010", "012", "013", "019", "023", "034", "035", "036", "037", "038", "039",
@@ -32,11 +24,8 @@ def save_rounded_lesionmask(subject):
     
     
 if __name__ == "__main__":
-    pass
-    """for subject in SUBJECTS:
-        try:
-            save_rounded_lesionmask(subject)
-        except FileNotFoundError:
-            print("Error with subject {0}, could not find the lesion mask".format(subject))"""
+    import sys
+    subject = sys.argv[1]
+    save_rounded_lesionmask(subject)
     
     

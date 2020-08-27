@@ -16,4 +16,5 @@ MPRAGE=$ANAT_DIR/sub-${SUBJECT}_MPRAGE.nii.gz
 
 rm $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalizedInverseWarped.nii.gz
 mv $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalizedWarped.nii.gz $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalized.nii.gz
-mv $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalized0GenericAffine.mat $ANAT_DIR/sub-${SUBJECT}_MPRAGE_to_FLAIR.mat
+#mv $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalized0GenericAffine.mat $ANAT_DIR/sub-${SUBJECT}_MPRAGE_to_FLAIR.mat
+rm $ANAT_DIR/sub-${SUBJECT}_MPRAGE_normalized0GenericAffine.mat
