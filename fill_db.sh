@@ -33,47 +33,47 @@ SUBJECT=${1}
 #source recon-all
 if [ $# == 1 ] || [ "$2" == "-all" ]
 then
-  source normalize_flair.sh $SUBJECT
-  source register_and_normalize_MPRAGE.sh $SUBJECT
+  source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
+  source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
 
-  source run_samseg.sh $SUBJECT
+  source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
 
   conda activate
-  python round_lesion_masks.py $SUBJECT
-  source normalize_aseg.sh $SUBJECT
-  source lesions_to_fs.sh $SUBJECT
-  python edit_aseg.py $SUBJECT
-  python make_lesions_xls.py $SUBJECT
-  source volumetry.sh $SUBJECT
-  python make_subject_xls.py $SUBJECT
+  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT
+  source $LES_VOLOC_DIR/normalize_aseg.sh $SUBJECT
+  source $LES_VOLOC_DIR/lesions_to_fs.sh $SUBJECT
+  python $LES_VOLOC_DIR/edit_aseg.py $SUBJECT
+  python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+  source $LES_VOLOC_DIR/volumetry.sh $SUBJECT
+  python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
 fi
 
 if [[ "$*" == *"-p"* ]]
 then
-  source normalize_flair.sh $SUBJECT
-  source register_and_normalize_MPRAGE.sh $SUBJECT
+  source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
+  source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
 fi
 
 if [[ "$*" == *"-s"* ]]
 then
-  source run_samseg.sh $SUBJECT
+  source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
 fi
 
 if [[ "$*" == *"-les"* ]]
 then
   conda activate
-  python round_lesion_masks.py $SUBJECT
+  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT
   conda deactivate
 fi
 
 if [[ "$*" == *"-a"* ]]
 then
   conda activate
-  source normalize_aseg.sh $SUBJECT
-  source lesions_to_fs.sh $SUBJECT
-  python edit_aseg.py $SUBJECT
-  python make_lesions_xls.py $SUBJECT
-  source volumetry.sh $SUBJECT
-  python make_subject_xls.py $SUBJECT
+  source $LES_VOLOC_DIR/normalize_aseg.sh $SUBJECT
+  source $LES_VOLOC_DIR/lesions_to_fs.sh $SUBJECT
+  python $LES_VOLOC_DIR/edit_aseg.py $SUBJECT
+  python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+  source $LES_VOLOC_DIR/volumetry.sh $SUBJECT
+  python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
   conda deactivate
 fi
