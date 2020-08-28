@@ -14,9 +14,10 @@ Help()
    echo "Syntax: source fill_db [-all|-p|-s|-a|-h]"
    echo "options:"
    echo "-all   Performs all the pipeline."
-   echo "-p     Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation."
-   echo "-s     Runs samseg."
-   echo "-a     Runs analyses"
+   echo "-p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation."
+   echo "-s     Step 3     : Runs samseg."
+   echo "-les   Step 4     : Makes the binarized lesion mask."
+   echo "-a     Steps 5-10 : Runs analyses and makes output db files."
    echo "-h     Prints this help."
    echo
 }
@@ -47,25 +48,32 @@ then
   python make_subject_xls.py $SUBJECT
 fi
 
-if [ "$2" == "-p" ]
+if [[ "$*" == *"-p"* ]]
 then
   source normalize_flair.sh $SUBJECT
   source register_and_normalize_MPRAGE.sh $SUBJECT
 fi
 
-if [ "$2" == "-s" ] || [ "$3" == "-s" ]
+if [[ "$*" == *"-s"* ]]
 then
   source run_samseg.sh $SUBJECT
 fi
 
-if [ "$2" == "-a" ] || [ "$3" == "-a" ] ||  [ "$4" == "-a" ]
+if [[ "$*" == *"-les"* ]]
 then
   conda activate
   python round_lesion_masks.py $SUBJECT
+  conda deactivate
+fi
+
+if [[ "$*" == *"-a"* ]]
+then
+  conda activate
   source normalize_aseg.sh $SUBJECT
   source lesions_to_fs.sh $SUBJECT
   python edit_aseg.py $SUBJECT
   python make_lesions_xls.py $SUBJECT
   source volumetry.sh $SUBJECT
   python make_subject_xls.py $SUBJECT
+  conda deactivate
 fi
