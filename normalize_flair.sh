@@ -2,11 +2,28 @@
 # Args: SUBJECT: subject id
 # Produces the normalized FLAIR
 
-source setup_env.sh
-export ANTSPATH=/home/mwynen/softwares/install/bin
+Help()
+{
+   # Display Help
+   echo "Produces the normalized FLAIR."
+   echo
+   echo "Arguments:"
+   echo "    Subject id"
+   echo
+   echo "Output:"
+   echo "    sub-\${SUBJECT_ID}_FLAIR_normalized.nii.gz ; 256x256x256, 1mm3."
+   echo
+   echo "USAGE: "
+   echo "     source normalize_flair.sh \$SUBJECT_ID"
+   echo
+}
+
+if [ $1 == -h ] || [ $1 == -help ] || [ $1 == --help ]; then
+  Help
+  return
+fi
 
 SUBJECT=${1}
-MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis
 
 ANAT_DIR=$MAIN_DIR/sub-${SUBJECT}/anat
 

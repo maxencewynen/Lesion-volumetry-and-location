@@ -7,18 +7,59 @@
 Help()
 {
    # Display Help
-   echo "Performs the pipeline filling the retrospective MS database."
-   echo "Files must be organized in BIDS format."
-   echo "If no option is specified, the '-all' option is assumed."
    echo
-   echo "Syntax: source fill_db [-all|-p|-s|-a|-h]"
-   echo "options:"
-   echo "-all   Performs all the pipeline."
-   echo "-p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation."
-   echo "-s     Step 3     : Runs samseg."
-   echo "-les   Step 4     : Makes the binarized lesion mask."
-   echo "-a     Steps 5-10 : Runs analyses and makes output db files."
-   echo "-h     Prints this help."
+   echo "Performs the pipeline filling the retrospective MS database."
+   echo
+   echo "For a better understanding of the pipeline as well as the files it uses/produces, see the pipeline schema les_voloc_pipeline.png"
+   echo
+   echo
+   echo "Pre conditions"
+   echo "  - recon-all.sh must already have been launched."
+   echo "  - Files must be organized in BIDS format."
+   echo "  - If no option is specified, the '-all' option is assumed."
+   echo "  - First argument must be the subject id."
+   echo "  - Run \"source source setup_env.sh\" before executing this script."
+   echo
+   echo "USAGE:"
+   echo
+   echo "         les_voloc \$SUBJECT_ID [-all|-p|-s|-a|-h]"
+   echo
+   echo
+   echo "Options:"
+   echo "  -all   Performs all the pipeline."
+   echo "  -p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation."
+   echo "  -s     Step 3     : Runs samseg."
+   echo "  -les   Step 4     : Makes the binarized lesion mask."
+   echo "  -a     Steps 5-10 : Runs analyses and makes output db files."
+   echo "  -h     Prints this help."
+   echo
+   echo "Input:"
+   echo "  -> anat/sub-\${SUBJECT_ID}_FLAIR.nii.gz"
+   echo "  -> anat/sub-\${SUBJECT_ID}_MPRAGE.nii.gz"
+   echo
+   echo "Output: "
+   echo "  -> sub-\${SUBJECT_ID}_lesions.xls"
+   echo "  -> sub-\${SUBJECT_ID}.xls"
+   echo
+   echo "Steps"
+   echo "    1. Normalize FLAIR (<1min)"
+   echo "    2. Register MPRAGE to normalized FLAIR (<5min)"
+   echo "    3. Run samseg segmentation. Produces lesion probability mask. (<1h)"
+   echo "    4. Binarize the lesion probability mask up to a certain threshold (<1min)"
+   echo "    5. Transform the Freesurfer segmentation (product of recon-all) into the normalized space (Samseg space) (<5min)"
+   echo "    6. Transform the binarized lesion mask (product of samseg) into Freesurfer space (<3min)"
+   echo "    7. Merge the brain segmentation files with the lesion masks in both samseg and Freesurfer spaces (<2min)"
+   echo "    8. Lesion labelling, volumetry and location (<15min)"
+   echo "    9. Recompute Freesurfer volumetry based on the new segmentation file (<30min)"
+   echo "    10. Make subject-xxx.xls (<1min)"
+   echo
+   echo
+   echo "Credits & contact"
+   echo
+   echo "Maxence Wynen - UCLouvain"
+   echo "maxencewynen@gmail.com"
+   echo "2020"
+   echo
    echo
 }
 

@@ -2,11 +2,29 @@
 # Args: SUBJECT: subject id
 # Finds the transformation from MPRAGE normalized to the orig used for recon all
 
-export ANTSPATH=/home/mwynen/softwares/install/bin
-source setup_env.sh
+Help()
+{
+   # Display Help
+   echo "Transform the binarized lesion mask (product of samseg) into Freesurfer space."
+   echo
+   echo "Arguments:"
+   echo "    Subject id"
+   echo
+   echo "Output:"
+   echo "    sub-\${SUBJECT_ID}_lesions_fs.mgz ; 256x256x256, 1mm3."
+   echo
+   echo "USAGE: "
+   echo "     source lesions_to_fs.sh \$SUBJECT_ID"
+   echo
+}
+
+if [ $1 == -h ] || [ $1 == -help ] || [ $1 == --help ]; then
+  Help
+  return
+fi
+
 
 SUBJECT=${1}
-MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis
 SUBJECT_DIR=$MAIN_DIR/sub-${SUBJECT}
 
 mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.mgz $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.nii.gz
