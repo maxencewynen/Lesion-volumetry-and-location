@@ -11,8 +11,9 @@ from make_lesion_info_excel import MAIN_DIR
 import numpy as np
 import nibabel as nib 
 import numpy.ma as ma
+import os
 
-SUBJECTS_DIR = "/home/mwynen/freesurfer/subjects"
+SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
 
 def update_aseg_norm(subject):
 

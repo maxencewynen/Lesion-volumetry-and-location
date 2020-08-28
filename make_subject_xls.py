@@ -8,10 +8,11 @@ Created on Wed Aug 26 15:31:18 2020
 
 
 import pandas as pd
-from make_lesions_xls import MAIN_DIR
 import sys
+import os
 
-SUBJECTS_DIR = "/home/mwynen/freesurfer/subjects"
+SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
+MAIN_DIR = os.environ["MAIN_DIR"]
 
 def get_brain_volumes(subject):
     stats={}

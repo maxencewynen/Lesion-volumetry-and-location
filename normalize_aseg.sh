@@ -6,7 +6,8 @@ export ANTSPATH=/home/mwynen/softwares/install/bin
 source setup_env.sh
 
 SUBJECT=${1}
-SUBJECT_DIR=/home/mwynen/scripts/MultipleSclerosis/sub-${SUBJECT}
+MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis
+SUBJECT_DIR=$MAIN_DIR/sub-${SUBJECT}
 
 mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.mgz $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.nii.gz
 

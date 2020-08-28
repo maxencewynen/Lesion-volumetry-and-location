@@ -6,8 +6,9 @@ source setup_env.sh
 export ANTSPATH=/home/mwynen/softwares/install/bin
 
 SUBJECT=${1}
+MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis
 
-ANAT_DIR=/home/mwynen/scripts/MultipleSclerosis/sub-${SUBJECT}/anat
+ANAT_DIR=$MAIN_DIR/sub-${SUBJECT}/anat
 
 rm -r $SUBJECTS_DIR/sub-${SUBJECT}_FLAIR_normalized
 

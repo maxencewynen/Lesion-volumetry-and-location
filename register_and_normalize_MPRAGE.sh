@@ -6,8 +6,8 @@ export ANTSPATH=/home/mwynen/softwares/install/bin
 source setup_env.sh
 
 SUBJECT=${1}
-
-ANAT_DIR=/home/mwynen/scripts/MultipleSclerosis/sub-${SUBJECT}/anat
+MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis
+ANAT_DIR=$MAIN_DIR/sub-${SUBJECT}/anat
 
 FLAIR=$ANAT_DIR/sub-${SUBJECT}_FLAIR_normalized.nii.gz
 MPRAGE=$ANAT_DIR/sub-${SUBJECT}_MPRAGE.nii.gz

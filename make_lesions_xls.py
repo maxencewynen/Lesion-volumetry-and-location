@@ -14,9 +14,7 @@ import os
 import pandas as pd
 from scipy.ndimage.morphology import binary_dilation
 
-MAIN_DIR="/home/mwynen/scripts/MultipleSclerosis"
-SUBJECTS = ["006", "010", "012", "013", "019", "023", "034", "035", "036", "037", "038", "039",
-             "040", "041", "042", "043", "044", "045", "047", "048", "051", "052", "058", "059", "097", "098"]
+MAIN_DIR=os.environ["MAIN_DIR"]
 
 def load_segmentations(subject):
     """

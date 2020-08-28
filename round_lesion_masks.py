@@ -8,15 +8,15 @@ Created on Mon Aug 24 16:43:08 2020
 
 import numpy as np
 import nibabel as nib 
+import os
 
-MAIN_DIR="/home/mwynen/scripts/MultipleSclerosis"
-SUBJECTS = ["006", "010", "012", "013", "019", "023", "034", "035", "036", "037", "038", "039",
-             "040", "041", "042", "043", "044", "045", "047", "048", "051", "052", "058", "059", "097", "098"]
+MAIN_DIR=os.environ["MAIN_DIR"]
 
-def save_rounded_lesionmask(subject):
+def save_rounded_lesionmask(subject, threshold=0.5):
     from make_lesion_info_excel import load_lesion
     image,lesions = load_lesion(subject)
-    lesions = np.round(lesions)
+    lesions[lesions >= threshold] = 1
+    lesions[lesions <  threshold] = 0
     
     nifti_out = nib.Nifti1Image(lesions,affine=image.affine)
     nib.save(nifti_out, MAIN_DIR+'/sub-{0}/segmentations/sub-{0}_lesions_binary.nii.gz'.format(subject))
@@ -26,6 +26,11 @@ def save_rounded_lesionmask(subject):
 if __name__ == "__main__":
     import sys
     subject = sys.argv[1]
-    save_rounded_lesionmask(subject)
+    
+    if len(sys.argv) < 2:
+        threshold = float(sys.argv[2])
+    else:
+        threshold = 0.5
+    save_rounded_lesionmask(subject,threshold)
     
     
