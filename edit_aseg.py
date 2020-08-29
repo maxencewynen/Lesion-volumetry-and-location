@@ -6,14 +6,13 @@ Created on Tue Aug 25 16:13:54 2020
 @author: mwynen
 """
 
-
-from make_lesion_info_excel import MAIN_DIR
 import numpy as np
 import nibabel as nib 
 import numpy.ma as ma
 import os
 
 SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
+MAIN_DIR = os.environ["MAIN_DIR"]
 
 def update_aseg_norm(subject):
 
@@ -21,8 +20,7 @@ def update_aseg_norm(subject):
     lesion_mx = lesion_image.get_fdata()
     
     
-    threshold = 0.5
-    lesion_mask = ma.masked_less(lesion_mx,threshold)
+    lesion_mask = ma.masked_not_equal(lesion_mx,1)
     
     aseg_image = nib.load(MAIN_DIR + "/sub-{0}/segmentations/sub-{0}_aseg_normalized.nii.gz".format(subject))
     aseg_mx = aseg_image.get_fdata()
@@ -39,8 +37,7 @@ def update_aseg_fs(subject):
     lesion_mx = lesion_image.get_fdata()
     
     
-    threshold = 0.5
-    lesion_mask = ma.masked_less(lesion_mx,threshold)
+    lesion_mask = ma.masked_not_equal(lesion_mx,1)
     
     aseg_image = nib.load(SUBJECTS_DIR + "/sub-{0}_MPRAGE.nii/mri/aseg.mgz".format(subject))
     aseg_mx = aseg_image.get_fdata()

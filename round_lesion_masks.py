@@ -13,8 +13,24 @@ import os
 MAIN_DIR=os.environ["MAIN_DIR"]
 
 def save_rounded_lesionmask(subject, threshold=0.5):
-    from make_lesion_info_excel import load_lesion
-    image,lesions = load_lesion(subject)
+    """
+    Binarize the lesion probability mask with respect to a certain threshold.
+    Saves the file in sub-id/segmentations/.
+
+    Parameters
+    ----------
+    subject : TYPE str
+        Subject id.
+    threshold : TYPE float, optional
+        Threshold for the binarizing of the lesion mask. The default is 0.5.
+
+    Returns
+    -------
+    None.
+
+    """
+    image = nib.load(MAIN_DIR + "/sub-{0}/segmentations/sub-{0}_lesions.mgz".format(subject))
+    lesions = image.get_fdata()
     lesions[lesions >= threshold] = 1
     lesions[lesions <  threshold] = 0
     
