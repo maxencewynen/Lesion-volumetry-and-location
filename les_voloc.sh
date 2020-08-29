@@ -8,16 +8,16 @@ Help()
 {
    # Display Help
    echo
-   echo "Performs the pipeline filling the retrospective MS database."
+   echo "Computes the lesion volumetry and location of a subject."
    echo
    echo "For a better understanding of the pipeline as well as the files it uses/produces, see the pipeline schema les_voloc_pipeline.png"
    echo
    echo
    echo "Pre conditions"
+   echo "  - First argument must be the subject id."
    echo "  - recon-all.sh must already have been launched."
    echo "  - Files must be organized in BIDS format."
    echo "  - If no option is specified, the '-all' option is assumed."
-   echo "  - First argument must be the subject id."
    echo "  - Run \"source source setup_env.sh\" before executing this script."
    echo
    echo "USAGE:"
