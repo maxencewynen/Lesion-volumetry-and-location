@@ -102,8 +102,9 @@ fi
 
 if [[ "$*" == *"-les"* ]]
 then
+  echo "THRESHOLD = $THRESHOLD"
   conda activate
-  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT
+  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT $THRESHOLD
   conda deactivate
 fi
 
