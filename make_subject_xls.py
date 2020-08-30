@@ -4,6 +4,12 @@
 Created on Wed Aug 26 15:31:18 2020
 
 @author: mwynen
+
+
+USAGE:
+    python make_subject_xls.py sub_id 
+    
+    -> sub_id       : Subject id (e.g. 001)
 """
 
 
@@ -15,6 +21,20 @@ SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
 MAIN_DIR = os.environ["MAIN_DIR"]
 
 def get_brain_volumes(subject):
+    """
+    Retrieves brain volumes from the aseg_lesions.stats file produced by volumetry.sh
+
+    Parameters
+    ----------
+    subject : TYPE <str>
+        Subject id.
+
+    Returns
+    -------
+    stats : TYPE <dict>
+        Dictionary of brain volumes.
+
+    """
     stats={}
     
     with open(SUBJECTS_DIR + "/sub-{0}_MPRAGE.nii/stats/aseg_lesions.stats".format(subject)) as file:
@@ -93,10 +113,42 @@ def get_brain_volumes(subject):
                 stats[key] = value/brainvol
         
         return stats
+    
+    
+def get_lesions_information(subject, stats):
+    """
+    Updates stats with the subjects' lesion informations
+
+    Parameters
+    ----------
+    subject : TYPE <str>
+        Subject id.
+    stats : TYPE <dict>
+        Dictionary of brain volumes.
+
+    Returns
+    -------
+    stats : TYPE <dict>
+        Dictionary of brain volumes and lesion informations.
+
+    """
+    
+    df = pd.read_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.xls".format(subject))
+    
+    lesion_count  = df['Unnamed: 0'].count()
+    lesion_volume = df['Voxel Volume'].sum()
+    
+    stats["Number of lesions"]   = lesion_count
+    stats["Total lesion volume"] = lesion_volume
+    
+    return stats
+    
+    
 
 def make_subject_xls(subject):
     
     stats = get_brain_volumes(subject)
+    stats = get_lesions_information(subject,stats)
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
     df = df.transpose()
     df.to_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}.xls".format(subject))

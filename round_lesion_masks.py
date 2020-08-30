@@ -4,9 +4,15 @@
 Created on Mon Aug 24 16:43:08 2020
 
 @author: mwynen
+
+
+USAGE:
+    python round_lesion_masks.py sub_id [threshold]
+    
+    -> sub_id       : Subject id (e.g. 001)
+    -> threshold    : (optional) threshold defining if a voxel should be a lesion or not
 """
 
-import numpy as np
 import nibabel as nib 
 import os
 
