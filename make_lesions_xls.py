@@ -100,6 +100,8 @@ def make_lesions_xls(subject, minimum_lesion_size=5):
         
         
         if lesion_voxel_volume_count > minimum_lesion_size:
+            print("\n\nLesion {0}: {1} voxels".format(lesion_id, lesion_voxel_volume_count))
+            
             # Get the lesion location
             loc_20,_,_ = lesion_location(subject, lesion_id, lesion_mx=labeled_lesions,
                                        aseg_mx=aseg, percentage=0.2)
@@ -107,11 +109,10 @@ def make_lesions_xls(subject, minimum_lesion_size=5):
                                        aseg_mx=aseg, percentage=0.3)
             
             id_lesions_dic[lesion_id] = [lesion_voxel_volume_count, loc_20, loc_30]#, loc_40, loc_50]
-            print("Lesion {0}: {1} voxels".format(lesion_id, lesion_voxel_volume_count))
             
         else: 
             # Discard lesion if size is inferior to the minimum lesion size
-            print("Lesion {0}: {1} voxels ==> Discarded (too small)".format(lesion_id, lesion_voxel_volume_count))
+            print("\n\nLesion {0}: {1} voxels ==> Discarded (too small)".format(lesion_id, lesion_voxel_volume_count))
             #labeled_lesions[labeled_lesions == lesion_id] = 0 # Leave commented, not working
     
     
@@ -193,7 +194,7 @@ def lesion_location(subject, lesion_label, lesion_mx=None, aseg_mx=None, percent
         
         # Append the results
         matching_voxels = count_matching_lesion_voxels(lesion_mx, aseg_temp, lesion_label, seg)
-        print( matching_voxels + " voxels in common with the lesion")
+        print( str(matching_voxels) + " voxels in common with the lesion")
         results.append(matching_voxels)
     
     # Get the lesion volume

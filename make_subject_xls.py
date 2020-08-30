@@ -107,9 +107,9 @@ def get_brain_volumes(subject):
         stats['Putamen']=left_putamen+right_putamen
         stats['Thalamus']=left_thalamus+right_thalamus
         
-        brainvol = stats["Brain volume"]
+        brainvol = stats["Intracranial volume"]
         for key,value in stats.items():
-            if key != "Brain volume":
+            if key != "Intracranial volume":
                 stats[key] = value/brainvol
         
         return stats
@@ -130,6 +130,8 @@ def get_lesions_information(subject, stats):
     -------
     stats : TYPE <dict>
         Dictionary of brain volumes and lesion informations.
+    wm_lesions: TYPE <int>
+        Total volume of white matter lesions
 
     """
     
@@ -141,14 +143,22 @@ def get_lesions_information(subject, stats):
     stats["Number of lesions"]   = lesion_count
     stats["Total lesion volume"] = lesion_volume
     
-    return stats
+    wm_lesions = df[df['Location 20%'] != 'Infratentorial']['Voxel Volume'].sum()
+    
+    return stats, wm_lesions
     
     
 
 def make_subject_xls(subject):
     
     stats = get_brain_volumes(subject)
-    stats = get_lesions_information(subject,stats)
+    stats, wm_lesions = get_lesions_information(subject,stats)
+    
+    ic_volume = stats['Intracranial volume']
+    
+    stats['White matter'] = ((stats['White matter']*ic_volume) - wm_lesions) / ic_volume
+    stats['Total lesion volume'] = stats['Total lesion volume'] / ic_volume 
+    
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
     df = df.transpose()
     df.to_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}.xls".format(subject))

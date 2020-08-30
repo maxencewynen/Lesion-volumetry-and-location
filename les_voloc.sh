@@ -74,29 +74,90 @@ SUBJECT=${1}
 #source recon-all
 if [ $# == 1 ] || [ "$2" == "-all" ]
 then
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Normalizing FLAIR +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
 
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
 
   conda activate
-  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Round lesion mask +-+-+-+-+-+-+-+-"
+  echo
+  python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT $THRESHOLD
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Normalizing aseg +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/normalize_aseg.sh $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Lesions to FS space +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/lesions_to_fs.sh $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Editing ASEG +-+-+-+-+-+-+-+-"
+  echo
   python $LES_VOLOC_DIR/edit_aseg.py $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Make lesions.xls  +-+-+-+-+-+-+-+-"
+  echo
   python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Re-running volumetry +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/volumetry.sh $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Make subject.xls +-+-+-+-+-+-+-+-"
+  echo
   python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
 fi
 
 if [[ "$*" == *"-p"* ]]
 then
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Normalizing FLAIR +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
+
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
+
 fi
 
 if [[ "$*" == *"-s"* ]]
 then
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+  echo
   source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
 fi
 
@@ -104,6 +165,10 @@ if [[ "$*" == *"-les"* ]]
 then
   echo "THRESHOLD = $THRESHOLD"
   conda activate
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Round lesion mask +-+-+-+-+-+-+-+-"
+  echo
   python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT $THRESHOLD
   conda deactivate
 fi
@@ -111,11 +176,41 @@ fi
 if [[ "$*" == *"-a"* ]]
 then
   conda activate
-  source $LES_VOLOC_DIR/normalize_aseg.sh $SUBJECT
-  source $LES_VOLOC_DIR/lesions_to_fs.sh $SUBJECT
-  python $LES_VOLOC_DIR/edit_aseg.py $SUBJECT
-  python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
-  source $LES_VOLOC_DIR/volumetry.sh $SUBJECT
-  python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Normalizing aseg +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/normalize_aseg.sh $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Lesions to FS space +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/lesions_to_fs.sh $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Editing ASEG +-+-+-+-+-+-+-+-"
+    echo
+    python $LES_VOLOC_DIR/edit_aseg.py $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Make lesions.xls  +-+-+-+-+-+-+-+-"
+    echo
+    python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Re-running volumetry +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/volumetry.sh $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Make subject.xls +-+-+-+-+-+-+-+-"
+    echo
+    python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
   conda deactivate
 fi
