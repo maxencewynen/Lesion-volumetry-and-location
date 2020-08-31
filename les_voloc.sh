@@ -176,7 +176,7 @@ fi
 if [[ "$*" == *"-a"* ]]
 then
   conda activate
-
+    
     echo
     echo
     echo "+-+-+-+-+-+-+-+- Normalizing aseg +-+-+-+-+-+-+-+-"

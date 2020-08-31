@@ -102,15 +102,25 @@ def get_brain_volumes(subject):
                         if column == 5:
                             right_thalamus = float(el)
                         column+=1
+            elif " WM-hypointensities" in line:
+                lst = line.split(' ')
+                column = 0
+                for el in lst:
+                    if el != '':
+                        if column == 5:
+                            wm_hypo = float(el)
+                        column+=1
         
         stats['Caudate']=left_caudate+right_caudate
         stats['Putamen']=left_putamen+right_putamen
         stats['Thalamus']=left_thalamus+right_thalamus
+        stats['WM-hypointenisities'] = wm_hypo
         
         brainvol = stats["Intracranial volume"]
         for key,value in stats.items():
             if key != "Intracranial volume":
                 stats[key] = value/brainvol
+       
         
         return stats
     
@@ -145,6 +155,18 @@ def get_lesions_information(subject, stats):
     
     wm_lesions = df[df['Location 20%'] != 'Infratentorial']['Voxel Volume'].sum()
     
+    wml = df[df["Location 20%"] == 'White Matter']['Voxel Volume'].sum()
+    peril = df[df["Location 20%"] == 'Periventricular']['Voxel Volume'].sum()
+    gml = df[df["Location 20%"] == 'Cortical or juxta-cortical']['Voxel Volume'].sum()
+    infratl = df[df["Location 20%"] == 'Infratentorial']['Voxel Volume'].sum()
+    
+    stats['White matter lesions %'] = (wml / lesion_volume)*100
+    stats['Cortical or juxta-cortical lesions %'] = (gml / lesion_volume)*100
+    stats['Periventricular lesions %'] = (peril / lesion_volume)*100
+    stats['Infratentorial lesions %'] = (infratl / lesion_volume)*100
+    
+    
+    
     return stats, wm_lesions
     
     
@@ -156,7 +178,7 @@ def make_subject_xls(subject):
     
     ic_volume = stats['Intracranial volume']
     
-    stats['White matter'] = ((stats['White matter']*ic_volume) - wm_lesions) / ic_volume
+    stats['White matter'] = stats['White matter'] - stats['WM-hypointenisities'] 
     stats['Total lesion volume'] = stats['Total lesion volume'] / ic_volume 
     
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
