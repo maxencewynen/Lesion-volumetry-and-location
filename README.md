@@ -17,12 +17,12 @@ For a better understanding of the pipeline as well as the files it uses/produces
 
 
 ## Options:
-  - -all   Performs all the pipeline.
-  - -p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation.
-  - -s     Step 3     : Runs samseg.
-  - -les   Step 4     : Makes the binarized lesion mask.
-  - -a     Steps 5-10 : Runs analyses and makes output db files.
-  - -h     Prints this help.
+  - -all&nbsp;&nbsp;&nbsp;Performs all the pipeline.
+  - -p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steps 1-2&nbsp;&nbsp;: Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation.
+  - -s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Step 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Runs samseg.
+  - -les&nbsp;&nbsp;&nbsp;Step 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Makes the binarized lesion mask.
+  - -a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steps 5-10 : Runs analyses and makes output db files.
+  - -h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prints this help.
 
 ## Input:
   - anat/sub-${SUBJECT_ID}\_FLAIR.nii.gz
