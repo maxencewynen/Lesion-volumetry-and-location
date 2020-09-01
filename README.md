@@ -25,8 +25,8 @@ For a better understanding of the pipeline as well as the files it uses/produces
   - -h     Prints this help.
 
 ## Input:
-  -> anat/sub-${SUBJECT_ID}\_FLAIR.nii.gz
-  -> anat/sub-${SUBJECT_ID}\_MPRAGE.nii.gz
+  - anat/sub-${SUBJECT_ID}\_FLAIR.nii.gz
+  - anat/sub-${SUBJECT_ID}\_MPRAGE.nii.gz
 
 ## Output:
   - sub-${SUBJECT_ID}\_lesions.csv
