@@ -1,7 +1,7 @@
 # Lesion-volumetry-and-location
 Computes the lesion volumetry and location of a subject.
 
-For a better understanding of the pipeline as well as the files it uses/produces, see the pipeline schema les_voloc_pipeline.png
+For a better understanding of the pipeline as well as the files it uses/produces, please report to the pipeline schema les_voloc_pipeline.png
 
 
 ## Pre conditions
@@ -42,7 +42,7 @@ For a better understanding of the pipeline as well as the files it uses/produces
     7. Merge the brain segmentation files with the lesion masks in both samseg and Freesurfer spaces (<2min)
     8. Lesion labelling, volumetry and location (<15min)
     9. Recompute Freesurfer volumetry based on the new segmentation file (<30min)
-    10. Make subject-xxx.xls (<1min)
+    10. Make subject-xxx.csv (<1min)
 
 
 ## Credits & contact
