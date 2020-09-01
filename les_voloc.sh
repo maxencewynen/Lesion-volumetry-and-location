@@ -38,8 +38,8 @@ Help()
    echo "  -> anat/sub-\${SUBJECT_ID}_MPRAGE.nii.gz"
    echo
    echo "Output: "
-   echo "  -> sub-\${SUBJECT_ID}_lesions.xls"
-   echo "  -> sub-\${SUBJECT_ID}.xls"
+   echo "  -> sub-\${SUBJECT_ID}_lesions.csv"
+   echo "  -> sub-\${SUBJECT_ID}.csv"
    echo
    echo "Steps"
    echo "    1. Normalize FLAIR (<1min)"
@@ -51,7 +51,7 @@ Help()
    echo "    7. Merge the brain segmentation files with the lesion masks in both samseg and Freesurfer spaces (<2min)"
    echo "    8. Lesion labelling, volumetry and location (<15min)"
    echo "    9. Recompute Freesurfer volumetry based on the new segmentation file (<30min)"
-   echo "    10. Make subject-xxx.xls (<1min)"
+   echo "    10. Make subject-xxx.csv (<1min)"
    echo
    echo
    echo "Credits & contact"
@@ -119,9 +119,9 @@ then
 
   echo
   echo
-  echo "+-+-+-+-+-+-+-+- Make lesions.xls  +-+-+-+-+-+-+-+-"
+  echo "+-+-+-+-+-+-+-+- Make lesions.csv  +-+-+-+-+-+-+-+-"
   echo
-  python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+  python $LES_VOLOC_DIR/make_lesions_csv.py $SUBJECT
 
   echo
   echo
@@ -131,9 +131,9 @@ then
 
   echo
   echo
-  echo "+-+-+-+-+-+-+-+- Make subject.xls +-+-+-+-+-+-+-+-"
+  echo "+-+-+-+-+-+-+-+- Make subject.csv +-+-+-+-+-+-+-+-"
   echo
-  python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
+  python $LES_VOLOC_DIR/make_subject_csv.py $SUBJECT
 fi
 
 if [[ "$*" == *"-p"* ]]
@@ -176,7 +176,7 @@ fi
 if [[ "$*" == *"-a"* ]]
 then
   conda activate
-    
+
     echo
     echo
     echo "+-+-+-+-+-+-+-+- Normalizing aseg +-+-+-+-+-+-+-+-"
@@ -197,9 +197,9 @@ then
 
     echo
     echo
-    echo "+-+-+-+-+-+-+-+- Make lesions.xls  +-+-+-+-+-+-+-+-"
+    echo "+-+-+-+-+-+-+-+- Make lesions.csv  +-+-+-+-+-+-+-+-"
     echo
-    python $LES_VOLOC_DIR/make_lesions_xls.py $SUBJECT
+    python $LES_VOLOC_DIR/make_lesions_csv.py $SUBJECT
 
     echo
     echo
@@ -209,8 +209,8 @@ then
 
     echo
     echo
-    echo "+-+-+-+-+-+-+-+- Make subject.xls +-+-+-+-+-+-+-+-"
+    echo "+-+-+-+-+-+-+-+- Make subject.csv +-+-+-+-+-+-+-+-"
     echo
-    python $LES_VOLOC_DIR/make_subject_xls.py $SUBJECT
+    python $LES_VOLOC_DIR/make_subject_csv.py $SUBJECT
   conda deactivate
 fi
