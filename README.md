@@ -4,19 +4,19 @@ Computes the lesion volumetry and location of a subject.
 For a better understanding of the pipeline as well as the files it uses/produces, see the pipeline schema les_voloc_pipeline.png
 
 
-Pre conditions
+## Pre conditions
   - First argument must be the subject id.
   - recon-all.sh must already have been launched.
   - Files must be organized in BIDS format.
   - If no option is specified, the '-all' option is assumed.
   - Run "source source setup_env.sh" before executing this script.
 
-USAGE:
+## USAGE:
 
          les_voloc $SUBJECT_ID [-all|-p|-s|-a|-h]
 
 
-Options:
+## Options:
   -all   Performs all the pipeline.
   -p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation.
   -s     Step 3     : Runs samseg.
@@ -24,15 +24,15 @@ Options:
   -a     Steps 5-10 : Runs analyses and makes output db files.
   -h     Prints this help.
 
-Input:
+## Input:
   -> anat/sub-${SUBJECT_ID}_FLAIR.nii.gz
   -> anat/sub-${SUBJECT_ID}_MPRAGE.nii.gz
 
-Output: 
+## Output: 
   -> sub-${SUBJECT_ID}_lesions.xls
   -> sub-${SUBJECT_ID}.xls
 
-Steps
+## Steps
     1. Normalize FLAIR (<1min)
     2. Register MPRAGE to normalized FLAIR (<5min)
     3. Run samseg segmentation. Produces lesion probability mask. (<1h)
@@ -45,7 +45,7 @@ Steps
     10. Make subject-xxx.xls (<1min)
 
 
-Credits & contact
+## Credits & contact
 
 Maxence Wynen - UCLouvain
 maxencewynen@gmail.com
