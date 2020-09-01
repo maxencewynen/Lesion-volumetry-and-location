@@ -7,7 +7,7 @@ Created on Wed Aug 26 15:31:18 2020
 
 
 USAGE:
-    python make_subject_xls.py sub_id 
+    python make_subject_csv.py sub_id 
     
     -> sub_id       : Subject id (e.g. 001)
 """
@@ -145,7 +145,7 @@ def get_lesions_information(subject, stats):
 
     """
     
-    df = pd.read_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.xls".format(subject))
+    df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     
     lesion_count  = df['Unnamed: 0'].count()
     lesion_volume = df['Voxel Volume'].sum()
@@ -171,7 +171,7 @@ def get_lesions_information(subject, stats):
     
     
 
-def make_subject_xls(subject):
+def make_subject_csv(subject):
     
     stats = get_brain_volumes(subject)
     stats, wm_lesions = get_lesions_information(subject,stats)
@@ -183,8 +183,8 @@ def make_subject_xls(subject):
     
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
     df = df.transpose()
-    df.to_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}.xls".format(subject))
+    df.to_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}.csv".format(subject))
     
 if __name__ == "__main__":
     subject = sys.argv[1]
-    make_subject_xls(subject)
+    make_subject_csv(subject)

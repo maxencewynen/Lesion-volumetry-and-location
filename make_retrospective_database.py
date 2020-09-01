@@ -10,7 +10,7 @@ import pandas as pd
 
 MAIN_DIR=os.environ["MAIN_DIR"]
 
-participants = pd.read_excel(MAIN_DIR + "/participants.xls")
+participants = pd.read_csv(MAIN_DIR + "/participants.csv")
 
 
 subjects = list()
@@ -29,7 +29,8 @@ retrospective_db = pd.DataFrame(columns = ['id', 'Intracranial volume', 'Brain v
                                            'Periventricular lesions %', 'Infratentorial lesions %'])
 for subject in subjects:
     try:
-        df = pd.read_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}.xls".format(subject))
+        
+        df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}.csv".format(subject))
         df['id'] = int(subject)
         
         df = df[['id', 'Intracranial volume', 'Brain volume', 
@@ -45,4 +46,4 @@ for subject in subjects:
 
 retrospective_db = participants.merge(retrospective_db, how = 'left')
 
-retrospective_db.to_excel(MAIN_DIR + '/retrospective_database.xls', index = 'id')
+retrospective_db.to_csv(MAIN_DIR + '/retrospective_database.csv', index = 'id')

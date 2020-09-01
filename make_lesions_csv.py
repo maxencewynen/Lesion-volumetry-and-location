@@ -6,7 +6,7 @@ Created on Tue Aug 25 21:44:32 2020
 @author: mwynen
 
 USAGE:
-    python make_lesions_xls.py sub_id [percentage]
+    python make_lesions_csv.py sub_id [percentage]
     
     -> sub_id       : Subject id (e.g. 001)
     -> percentage   : (optional) Percentage of the lesion that must match the dilation of a brain 
@@ -62,9 +62,9 @@ def load_segmentations(subject):
 
 
 
-def make_lesions_xls(subject, minimum_lesion_size=5):
+def make_lesions_csv(subject, minimum_lesion_size=5):
     """
-    Makes the lesion based database (lesions.xls) that regroups informations about
+    Makes the lesion based database (lesions.csv) that regroups informations about
     the lesions of one subject (label - volume - location). 
 
     Parameters
@@ -120,7 +120,7 @@ def make_lesions_xls(subject, minimum_lesion_size=5):
     columns = ["Voxel Volume", "Location 20%", "Location 30%"]
     
     df = pd.DataFrame.from_dict(id_lesions_dic, orient='index', columns=columns)
-    df.to_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.xls".format(subject))
+    df.to_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     
     # Save the lesion mask with labels to a nifti file
     nifti_out = nib.Nifti1Image(labeled_lesions,affine=image.affine)
@@ -256,7 +256,7 @@ def count_matching_lesion_voxels(lesion_mx, segmentation_mx, lesion, segmentatio
     
 def make_location_mask(subject, percentage=20):
     """
-    Makes a lesion location mask based on the lesion based db (lesions.xls)
+    Makes a lesion location mask based on the lesion based db (lesions.csv)
 
     Parameters
     ----------
@@ -272,7 +272,7 @@ def make_location_mask(subject, percentage=20):
 
     """
     # Retrieve lesion based database
-    df = pd.read_excel(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.xls".format(subject))
+    df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     locations = list(df["Location {0}%".format(percentage)])
     ids = list(df["Unnamed: 0"])
     
@@ -299,7 +299,7 @@ if __name__ == "__main__":
     import sys
     
     subject = sys.argv[1]
-    make_lesions_xls(subject)
+    make_lesions_csv(subject)
     
     if len(sys.argv)>2:
         make_location_mask(subject, int(sys.argv[2]))
