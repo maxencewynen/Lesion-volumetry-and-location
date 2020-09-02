@@ -178,7 +178,7 @@ def make_subject_csv(subject):
     
     ic_volume = stats['Intracranial volume']
     
-    stats['White matter'] = stats['White matter'] - stats['WM-hypointenisities'] 
+    stats['White matter'] = stats['White matter'] + stats['WM-hypointenisities'] 
     stats['Total lesion volume'] = stats['Total lesion volume'] / ic_volume 
     
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
