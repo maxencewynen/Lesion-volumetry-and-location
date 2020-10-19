@@ -105,10 +105,10 @@ def make_lesions_csv(subject, minimum_lesion_size=5):
             # Get the lesion location
             loc_20,_,_ = lesion_location(subject, lesion_id, lesion_mx=labeled_lesions,
                                        aseg_mx=aseg, percentage=0.2)
-            loc_30,_,_ = lesion_location(subject, lesion_id, lesion_mx=labeled_lesions,
-                                       aseg_mx=aseg, percentage=0.3)
+            # loc_30,_,_ = lesion_location(subject, lesion_id, lesion_mx=labeled_lesions,
+            #                            aseg_mx=aseg, percentage=0.3)
             
-            id_lesions_dic[lesion_id] = [lesion_voxel_volume_count, loc_20, loc_30]#, loc_40, loc_50]
+            id_lesions_dic[lesion_id] = [lesion_voxel_volume_count, loc_20] #, loc_30]#, loc_40, loc_50]
             
         else: 
             # Discard lesion if size is inferior to the minimum lesion size
@@ -117,7 +117,7 @@ def make_lesions_csv(subject, minimum_lesion_size=5):
     
     
     # Make the database
-    columns = ["Voxel Volume", "Location 20%", "Location 30%"]
+    columns = ["Voxel Volume", "Location"] #" 20%", "Location 30%"]
     
     df = pd.DataFrame.from_dict(id_lesions_dic, orient='index', columns=columns)
     df.to_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
@@ -306,5 +306,5 @@ if __name__ == "__main__":
         
     else:
         make_location_mask(subject,20)
-        make_location_mask(subject,30)
+        # make_location_mask(subject,30)
     
