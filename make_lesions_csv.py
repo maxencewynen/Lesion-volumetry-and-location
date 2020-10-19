@@ -273,7 +273,7 @@ def make_location_mask(subject, percentage=20):
     """
     # Retrieve lesion based database
     df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
-    locations = list(df["Location {0}%".format(percentage)])
+    locations = list(df["Location"]) # {0}%".format(percentage)])
     ids = list(df["Unnamed: 0"])
     
     lesion_image = nib.load(MAIN_DIR+ "/sub-{0}/segmentations/sub-{0}_labeled_lesions.nii.gz".format(subject))
