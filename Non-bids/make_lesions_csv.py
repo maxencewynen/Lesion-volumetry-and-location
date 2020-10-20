@@ -48,7 +48,7 @@ def load_segmentations(subject):
 
     """
     # Load segmentations
-    aseg_img = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_aseg_lesions.nii.gz".format(subject))
+    aseg_img = nib.load(MAIN_DIR + "/sub-{0}/segmentations/sub-{0}_aseg_lesions.nii.gz".format(subject))
     seg = aseg_img.get_fdata()
     
     # Make lesion matrix from segmentations matrix
@@ -120,11 +120,11 @@ def make_lesions_csv(subject, minimum_lesion_size=5):
     columns = ["Voxel Volume", "Location"] #" 20%", "Location 30%"]
     
     df = pd.DataFrame.from_dict(id_lesions_dic, orient='index', columns=columns)
-    df.to_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}_lesions.csv".format(subject))
+    df.to_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     
     # Save the lesion mask with labels to a nifti file
     nifti_out = nib.Nifti1Image(labeled_lesions,affine=image.affine)
-    nib.save(nifti_out, MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_labeled_lesions.nii.gz'.format(subject))
+    nib.save(nifti_out, MAIN_DIR+'/sub-{0}/segmentations/sub-{0}_labeled_lesions.nii.gz'.format(subject))
     
     
     
@@ -158,12 +158,12 @@ def lesion_location(subject, lesion_label, lesion_mx=None, aseg_mx=None, percent
     
     if lesion_mx is None:
         # Load lesion mask
-        lesion_image = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_labeled_lesions.nii.gz".format(subject))
+        lesion_image = nib.load(MAIN_DIR + "/sub-{0}/segmentations/sub-{0}_labeled_lesions.nii.gz".format(subject))
         lesion_mx = lesion_image.get_fdata()
         
     if aseg_mx is None:
         # Load segmentation
-        aseg_image = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_aseg.mgz".format(subject))
+        aseg_image = nib.load(MAIN_DIR + "/sub-{2}/segmentations/sub-{0}_aseg.mgz".format(subject))
         aseg_mx = aseg_image.get_fdata()
     
     
@@ -272,11 +272,11 @@ def make_location_mask(subject, percentage=20):
 
     """
     # Retrieve lesion based database
-    df = pd.read_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}_lesions.csv".format(subject))
+    df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     locations = list(df["Location"]) # {0}%".format(percentage)])
     ids = list(df["Unnamed: 0"])
     
-    lesion_image = nib.load(MAIN_DIR+ "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_labeled_lesions.nii.gz".format(subject))
+    lesion_image = nib.load(MAIN_DIR+ "/sub-{0}/segmentations/sub-{0}_labeled_lesions.nii.gz".format(subject))
     lesion_mx = lesion_image.get_fdata()
     
     lesion_loc = lesion_mx.copy()
@@ -287,7 +287,7 @@ def make_location_mask(subject, percentage=20):
         lesion_loc[lesion_loc == ids[i]] = dictionary[locations[i]]
     
     nifti_out = nib.Nifti1Image(lesion_loc,affine=lesion_image.affine)
-    nib.save(nifti_out, MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_lesion_locations.nii.gz'.format(subject))
+    nib.save(nifti_out, MAIN_DIR+'/sub-{0}/segmentations/sub-{0}_lesion_locations_{1}.nii.gz'.format(subject,percentage))
 
     
     

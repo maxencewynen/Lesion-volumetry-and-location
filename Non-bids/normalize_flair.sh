@@ -23,18 +23,12 @@ if [ $1 == -h ] || [ $1 == -help ] || [ $1 == --help ]; then
   return
 fi
 
-
-
 SUBJECT=${1}
 
-ANAT_DIR=$MAIN_DIR/sub-${SUBJECT}/ses-01/anat
-FLAIR=$ANAT_DIR/sub-${SUBJECT}_ses-01_FLAIR.nii.gz
-MPRAGE=$ANAT_DIR/sub-${SUBJECT}_ses-01_MPRAGE.nii.gz
-
-TRANSFORMATIONS=$MAIN_DIR/derivatives/transformations
+ANAT_DIR=$MAIN_DIR/sub-${SUBJECT}/anat
 
 rm -r $SUBJECTS_DIR/sub-${SUBJECT}_FLAIR_normalized
 
-recon-all -motioncor -i $FLAIR -subjid sub-${SUBJECT}_FLAIR_normalized
+recon-all -motioncor -i $ANAT_DIR/sub-${SUBJECT}_FLAIR.nii.gz -subjid sub-${SUBJECT}_FLAIR_normalized
 
-mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_FLAIR_normalized/mri/orig.mgz  $TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.nii.gz
+mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_FLAIR_normalized/mri/orig.mgz  $ANAT_DIR/sub-${SUBJECT}_FLAIR_normalized.nii.gz

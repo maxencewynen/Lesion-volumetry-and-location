@@ -35,13 +35,13 @@ def save_rounded_lesionmask(subject, threshold=0.5):
     None.
 
     """
-    image = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_lesions.mgz".format(subject))
+    image = nib.load(MAIN_DIR + "/sub-{0}/segmentations/sub-{0}_lesions.mgz".format(subject))
     lesions = image.get_fdata()
     lesions[lesions >= threshold] = 1
     lesions[lesions <  threshold] = 0
     
     nifti_out = nib.Nifti1Image(lesions,affine=image.affine)
-    nib.save(nifti_out, MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_lesions_binary.nii.gz'.format(subject))
+    nib.save(nifti_out, MAIN_DIR+'/sub-{0}/segmentations/sub-{0}_lesions_binary.nii.gz'.format(subject))
     
     
     

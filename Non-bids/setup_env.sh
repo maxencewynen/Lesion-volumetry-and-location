@@ -7,7 +7,7 @@ export SUBJECTS_DIR=$FREESURFER_HOME/subjects
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # les_voloc paths
-export MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis_b # Path for database directory
+export MAIN_DIR=/home/mwynen/scripts/MultipleSclerosis # Path for database directory
 export ANTSPATH=/home/mwynen/softwares/install/bin # Path for ANTs Registration
 export ALL_SUBJECTS=(006 012 013 019 034 035 036 037 038 040 041 042 043 044 045 047 048 051 052 058 059 097 098) # List of all subjects
 export LES_VOLOC_DIR=/home/mwynen/scripts/MS-Database-filling # Path to directory containing this script

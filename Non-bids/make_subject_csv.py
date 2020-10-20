@@ -145,7 +145,7 @@ def get_lesions_information(subject, stats):
 
     """
     
-    df = pd.read_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}_lesions.csv".format(subject))
+    df = pd.read_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}_lesions.csv".format(subject))
     
     lesion_count  = df['Unnamed: 0'].count()
     lesion_volume = df['Voxel Volume'].sum()
@@ -153,12 +153,12 @@ def get_lesions_information(subject, stats):
     stats["Number of lesions"]   = lesion_count
     stats["Total lesion volume"] = lesion_volume
     
-    wm_lesions = df[df['Location'] != 'Infratentorial']['Voxel Volume'].sum()
+    wm_lesions = df[df['Location 20%'] != 'Infratentorial']['Voxel Volume'].sum()
     
-    wml = df[df["Location"] == 'White Matter']['Voxel Volume'].sum()
-    peril = df[df["Location"] == 'Periventricular']['Voxel Volume'].sum()
-    gml = df[df["Location"] == 'Cortical or juxta-cortical']['Voxel Volume'].sum()
-    infratl = df[df["Location"] == 'Infratentorial']['Voxel Volume'].sum()
+    wml = df[df["Location 20%"] == 'White Matter']['Voxel Volume'].sum()
+    peril = df[df["Location 20%"] == 'Periventricular']['Voxel Volume'].sum()
+    gml = df[df["Location 20%"] == 'Cortical or juxta-cortical']['Voxel Volume'].sum()
+    infratl = df[df["Location 20%"] == 'Infratentorial']['Voxel Volume'].sum()
     
     stats['White matter lesions %'] = (wml / lesion_volume)*100
     stats['Cortical or juxta-cortical lesions %'] = (gml / lesion_volume)*100
@@ -183,7 +183,7 @@ def make_subject_csv(subject):
     
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
     df = df.transpose()
-    df.to_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}.csv".format(subject))
+    df.to_csv(MAIN_DIR + "/sub-{0}/stats/sub-{0}.csv".format(subject))
     
 if __name__ == "__main__":
     subject = sys.argv[1]
