@@ -22,15 +22,17 @@ Help()
    echo
    echo "USAGE:"
    echo
-   echo "         les_voloc \$SUBJECT_ID [-all|-p|-s|-a|-h]"
+   echo "         les_voloc \$SUBJECT_ID [-all|-p|-s|-a|-h[|-mprage]]"
    echo
    echo
    echo "Options:"
    echo "  -all   Performs all the pipeline."
-   echo "  -p     Steps 1-2  : Processes data (MPRAGE and FLAIR) to prepare for samseg lesion localisation."
+   echo "  [-mprage]         : (optional) Specifies to use the MPRAGE"
+   echo "  -p     Steps 1-2  : Processes data to prepare for samseg lesion localisation."
    echo "  -s     Step 3     : Runs samseg."
    echo "  -les   Step 4     : Makes the binarized lesion mask."
    echo "  -a     Steps 5-10 : Runs analyses and makes output db files."
+   echo "  -regstar          : Registrates the FLAIR and the binarized lesion mask to the FLAIRstar"
    echo "  -h     Prints this help."
    echo
    echo "Input:"
@@ -62,6 +64,10 @@ Help()
    echo
    echo
 }
+if [ "$#" == 0 ]; then
+  echo "Type les_voloc --help to get some help."
+fi
+
 
 if [ $1 == -h ] || [ $1 == -help ] || [ $1 == --help ]; then
   Help
@@ -72,7 +78,7 @@ SUBJECT=${1}
 
 
 #source recon-all
-if [ $# == 1 ] || [ "$2" == "-all" ]
+if [ "$2" == "-all" ]
 then
   echo
   echo
@@ -80,17 +86,26 @@ then
   echo
   source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
 
-  echo
-  echo
-  echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
-  echo
-  source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
+  if [[ "$*" == *"-mprage"* ]]
+  then
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
 
-  echo
-  echo
-  echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
-  echo
-  source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
+  else
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/run_samseg_without_mprage.sh $SUBJECT
+  fi
 
   conda activate
   echo
@@ -144,21 +159,39 @@ then
   echo
   source $LES_VOLOC_DIR/normalize_flair.sh $SUBJECT
 
-  echo
-  echo
-  echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
-  echo
-  source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
+  if [[ "$*" == *"-mprage"* ]]
+  then
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
+  fi
 
 fi
 
 if [[ "$*" == *"-s"* ]]
 then
-  echo
-  echo
-  echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
-  echo
-  source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
+  if [[ "$*" == *"-mprage"* ]]
+  then
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Normalizing MPRAGE +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/register_and_normalize_MPRAGE.sh $SUBJECT
+
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/run_samseg.sh $SUBJECT
+  else
+    echo
+    echo
+    echo "+-+-+-+-+-+-+-+- Running samseg +-+-+-+-+-+-+-+-"
+    echo
+    source $LES_VOLOC_DIR/run_samseg_without_mprage.sh $SUBJECT
+  fi
 fi
 
 if [[ "$*" == *"-les"* ]]
@@ -171,6 +204,14 @@ then
   echo
   python $LES_VOLOC_DIR/round_lesion_masks.py $SUBJECT $THRESHOLD
   conda deactivate
+fi
+
+if [[ "$*" == *"-regstar"* ]]; then
+  echo
+  echo
+  echo "+-+-+-+-+-+-+-+- Registering FLAIR and binary lesion mask to FLAIRstar +-+-+-+-+-+-+-+-"
+  echo
+  source register_flair_to_star.sh $SUBJECT
 fi
 
 if [[ "$*" == *"-a"* ]]
