@@ -17,6 +17,12 @@ export THRESHOLD=0.5 # Threshold for binarizing lesion probability mask (leave a
 #ALL_SUBJECTS=(006 010 012 013 019 023 034 035 036 037 038 039 040 041 042 043 044 045 047 048 051 052 058 059 097 098)
 alias les_voloc='source $LES_VOLOC_DIR/les_voloc.sh'
 alias newsubj='source $LES_VOLOC_DIR/subject_folders_creator.sh'
+function label {
+  conda activate
+  python $LES_VOLOC_DIR/label_lesion_mask.py $1 $2 $3
+  conda deactivate
+}
+#alias label='conda activate; python $LES_VOLOC_DIR/label_lesion_mask.py'
 
 echo
 echo "-------- Setting up environment for les_voloc --------"
@@ -26,4 +32,3 @@ echo "MAIN_DIR          $MAIN_DIR"
 echo "LES_VOLOC_DIR     $LES_VOLOC_DIR"
 echo "ANTSPATH          $ANTSPATH"
 echo "ANTs_registration $ANTs_registration"
-echo "THRESHOLD         $THRESHOLD"
