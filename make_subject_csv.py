@@ -19,6 +19,7 @@ import os
 
 SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
 MAIN_DIR = os.environ["MAIN_DIR"]
+SESSION = os.environ["SESSION"]
 
 def get_brain_volumes(subject):
     """
@@ -145,7 +146,7 @@ def get_lesions_information(subject, stats):
 
     """
     
-    df = pd.read_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}_lesions.csv".format(subject))
+    df = pd.read_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-".format(subject) +SESSION+"/sub-{0}_lesions.csv".format(subject))
     
     lesion_count  = df['Unnamed: 0'].count()
     lesion_volume = df['Voxel Volume'].sum()
@@ -183,7 +184,7 @@ def make_subject_csv(subject):
     
     df = pd.DataFrame.from_dict(stats, orient='index', columns = [subject])
     df = df.transpose()
-    df.to_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-01/sub-{0}.csv".format(subject))
+    df.to_csv(MAIN_DIR + "/derivatives/stats/sub-{0}/ses-".format(subject) +SESSION+"/sub-{0}.csv".format(subject))
     
 if __name__ == "__main__":
     subject = sys.argv[1]

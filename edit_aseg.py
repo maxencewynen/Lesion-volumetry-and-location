@@ -18,6 +18,7 @@ import os
 
 SUBJECTS_DIR = os.environ["SUBJECTS_DIR"]
 MAIN_DIR = os.environ["MAIN_DIR"]
+SESSION = os.environ["SESSION"]
 
 def update_aseg_norm(subject):
     """
@@ -35,13 +36,13 @@ def update_aseg_norm(subject):
 
     """
     # Load lesion mask
-    lesion_image = nib.load(MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_lesions_binary.nii.gz'.format(subject))
+    lesion_image = nib.load(MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-{1}/sub-{0}_lesions_binary.nii.gz'.format(subject,SESSION))
     lesion_mx = lesion_image.get_fdata()
     
     lesion_mask = ma.masked_not_equal(lesion_mx,1)
     
     # Load Freesurfer segmentation mask (aseg)
-    aseg_image = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_aseg_normalized.nii.gz".format(subject))
+    aseg_image = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-{1}/sub-{0}_aseg_normalized.nii.gz".format(subject,SESSION))
     aseg_mx = aseg_image.get_fdata()
     
     # Set all voxels of aseg marked as lesion in the lesion mask to 99 (Freesurfer lesion id)
@@ -49,7 +50,7 @@ def update_aseg_norm(subject):
     
     # Save resulting matrix to nifti file
     nifti_out = nib.Nifti1Image(aseg_mask,affine=aseg_image.affine)
-    nib.save(nifti_out, MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/sub-{0}_aseg_lesions.nii.gz".format(subject))   
+    nib.save(nifti_out, MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-{1}/sub-{0}_aseg_lesions.nii.gz".format(subject,SESSION))   
 
 
 def update_aseg_fs(subject):

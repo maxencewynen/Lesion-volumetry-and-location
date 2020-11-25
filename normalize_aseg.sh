@@ -27,10 +27,10 @@ fi
 
 SUBJECT=${1}
 TRANSFORMATIONS=$MAIN_DIR/derivatives/transformations
-FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.nii.gz
-FLAIRmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.mgz
-MPRAGE=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_MPRAGE_normalized.nii.gz
-MPRAGEmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_MPRAGE_normalized.mgz
+FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.nii.gz
+FLAIRmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.mgz
+MPRAGE=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_MPRAGE_normalized.nii.gz
+MPRAGEmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_MPRAGE_normalized.mgz
 
 
 SUBJECT_DIR=$MAIN_DIR/sub-${SUBJECT}
@@ -45,12 +45,12 @@ ASEG=$SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/aseg.nii.gz
 mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/aseg.mgz $ASEG
 
 
-$ANTs_registration -d 3 -n 4 -f $MPn -m $ORIG -t r -o $TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized
+$ANTs_registration -d 3 -n 4 -f $MPn -m $ORIG -t r -o $TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized
 
 ${ANTSPATH}/antsApplyTransforms \
 -d 3 \
 -i ${ASEG} \
 -r $MPn \
 -n GenericLabel \
--t $TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat \
--o $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_aseg_normalized.nii.gz
+-t $TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat \
+-o $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_aseg_normalized.nii.gz

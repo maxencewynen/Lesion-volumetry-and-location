@@ -15,7 +15,7 @@ import sys
 
 if len(sys.argv) <2:
     print("USAGE : \n    python change_orientation.py path/to/input.nii.gz axis[x|y|z] path/to/output.nii.gz")
-elif sys[1] == "-h":
+elif sys.argv[1] == "-h":
     print("USAGE : \n    python change_orientation.py path/to/input.nii.gz axis[x|y|z] path/to/output.nii.gz")
 
 file = sys.argv[1]

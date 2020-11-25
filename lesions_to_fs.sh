@@ -26,20 +26,20 @@ fi
 
 SUBJECT=${1}
 TRANSFORMATIONS=$MAIN_DIR/derivatives/transformations
-FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.nii.gz
+FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.nii.gz
 
 mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.mgz $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.nii.gz
 
 ORIG=$SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/orig.nii.gz
 
-LESIONS=$MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions_binary.nii.gz
+LESIONS=$MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions_binary.nii.gz
 
 ${ANTSPATH}/antsApplyTransforms \
 -d 3 \
 -i ${LESIONS} \
 -r $ORIG \
 -n GenericLabel \
--t [$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat, 1] \
+-t [$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat, 1] \
 -o $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/lesions_fs.nii.gz
 
 ${ANTSPATH}/antsApplyTransforms \
@@ -47,7 +47,7 @@ ${ANTSPATH}/antsApplyTransforms \
 -i ${FLAIR} \
 -r $ORIG \
 -n GenericLabel \
--t [$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat, 1] \
+-t [$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_ORIG_to_MPRAGE_normalized0GenericAffine.mat, 1] \
 -o $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/FLAIR.nii.gz
 
 mri_convert $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/lesions_fs.nii.gz $SUBJECTS_DIR/sub-${SUBJECT}_MPRAGE.nii/mri/lesions_fs.mgz

@@ -36,8 +36,8 @@ Help()
    echo "  -h     Prints this help."
    echo
    echo "Input:"
-   echo "  -> anat/sub-\${SUBJECT_ID}_FLAIR.nii.gz"
-   echo "  -> anat/sub-\${SUBJECT_ID}_MPRAGE.nii.gz"
+   echo "  -> anat/sub-\${SUBJECT_ID}_ses-xx_FLAIR.nii.gz"
+   echo "  -> anat/sub-\${SUBJECT_ID}_ses-xx_MPRAGE.nii.gz"
    echo
    echo "Output: "
    echo "  -> sub-\${SUBJECT_ID}_lesions.csv"
