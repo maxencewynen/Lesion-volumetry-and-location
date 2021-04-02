@@ -13,16 +13,17 @@ from scipy.ndimage.measurements import label
 import os
 
 MAIN_DIR=os.environ["MAIN_DIR"]
+SESSION=os.environ['SESSION']
 
 def label_lesions(subject, segmentation_filename, output_filename):
-    lesion_mask_img = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-01/".format(subject) + segmentation_filename)
+    lesion_mask_img = nib.load(MAIN_DIR + "/derivatives/segmentations/sub-{0}/ses-{1}/".format(subject, SESSION) + segmentation_filename)
     lesion_mask = lesion_mask_img.get_fdata()
     
     structure = np.ones((3, 3, 3))
     labeled_lesions, nlesions = label(lesion_mask,structure)
     
     nifti_out = nib.Nifti1Image(labeled_lesions,affine=lesion_mask_img.affine)
-    nib.save(nifti_out, MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-01/'.format(subject) + output_filename)
+    nib.save(nifti_out, MAIN_DIR+'/derivatives/segmentations/sub-{0}/ses-{1}/'.format(subject,SESSION) + output_filename)
     
     
 

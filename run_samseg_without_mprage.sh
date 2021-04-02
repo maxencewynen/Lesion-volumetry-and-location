@@ -26,14 +26,12 @@ fi
 
 SUBJECT=${1}
 TRANSFORMATIONS=$MAIN_DIR/derivatives/transformations
-FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.nii.gz
-FLAIRmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.mgz
-#MPRAGE=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_MPRAGE_normalized.nii.gz
-#MPRAGEmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_MPRAGE_normalized.mgz
+FLAIR=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.nii.gz
+FLAIRmgz=$TRANSFORMATIONS/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.mgz
 
 
 
-SAMSEG_OUTDIR=$MAIN_DIR/derivatives/samseg/sub-${SUBJECT}/ses-01/
+SAMSEG_OUTDIR=$MAIN_DIR/derivatives/samseg/sub-${SUBJECT}/ses-${SESSION}/
 #:'
 # For freesurfer visualization
 #mri_convert $MPRAGE $MPRAGEmgz
@@ -43,6 +41,6 @@ mri_convert $FLAIR $FLAIRmgz
 
 fspython $SAMSEG -i $FLAIRmgz --lesion --lesion-mask-pattern 0 --threads 8 -o $SAMSEG_OUTDIR --save-posteriors
 #'
-cp $SAMSEG_OUTDIR/posteriors/Lesions.mgz $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions.mgz
+cp $SAMSEG_OUTDIR/posteriors/Lesions.mgz $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions.mgz
 
-mri_convert $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions.mgz $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions.nii.gz
+mri_convert $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions.mgz $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions.nii.gz

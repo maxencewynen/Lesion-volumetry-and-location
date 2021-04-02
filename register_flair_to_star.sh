@@ -20,17 +20,17 @@ Help()
 
 
 SUBJECT=$1
-$ANTs_registration -d 3 -n 4 -f $MAIN_DIR/sub-${SUBJECT}/ses-01/anat/sub-${SUBJECT}_ses-01_acq-mag_T2star.nii.gz -m $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized.nii.gz -t r -o $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_star
+$ANTs_registration -d 3 -n 4 -f $MAIN_DIR/sub-${SUBJECT}/ses-${SESSION}/anat/sub-${SUBJECT}_ses-${SESSION}_acq-mag_T2star.nii.gz -m $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized.nii.gz -t r -o $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_star
 
 ${ANTSPATH}/antsApplyTransforms \
   -d 3 \
-  -i $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions_binary.nii.gz \
-  -r $MAIN_DIR/sub-${SUBJECT}/ses-01/anat/sub-${SUBJECT}_ses-01_acq-mag_T2star.nii.gz \
-  -t $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_star0GenericAffine.mat \
+  -i $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions_binary.nii.gz \
+  -r $MAIN_DIR/sub-${SUBJECT}/ses-${SESSION}/anat/sub-${SUBJECT}_ses-${SESSION}_acq-mag_T2star.nii.gz \
+  -t $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_star0GenericAffine.mat \
   -n GenericLabel \
-  -o $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_lesions_binary_star.nii.gz
+  -o $MAIN_DIR/derivatives/segmentations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_lesions_binary_star.nii.gz
 
 
-mv $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_starWarped.nii.gz $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_star.nii.gz
-rm $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_star0GenericAffine.mat
-rm $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-01/sub-${SUBJECT}_FLAIR_normalized_starInverseWarped.nii.gz
+mv $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_starWarped.nii.gz $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_star.nii.gz
+rm $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_star0GenericAffine.mat
+rm $MAIN_DIR/derivatives/transformations/sub-${SUBJECT}/ses-${SESSION}/sub-${SUBJECT}_FLAIR_normalized_starInverseWarped.nii.gz
